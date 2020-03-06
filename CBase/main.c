@@ -8,7 +8,7 @@ int main(const int argc, const char* argv[])
 	poly = PushMonmial(MakeMonomial(1, 5), poly);
 	SortPolynomial(poly);
 	PrintPolynomial(poly);
-
+	printf("hello world");
 
 
 	DestoryPolynomial(poly);
