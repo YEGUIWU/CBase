@@ -127,6 +127,7 @@ int main()
 		{
 		case '0': 
 			TestAll();
+			system("pause");
 			break;
 		case '1': 
 			polyA = DestoryPolynomial(polyA);

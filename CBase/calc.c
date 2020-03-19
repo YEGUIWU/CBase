@@ -6,7 +6,6 @@
 
 //#define MY_DEBUG //自定义输出调试信息开关
 
-
 //----------------------------------------
 //输出调试信息函数
 int static inline OutputDebugInfo(va_alist) va_dcl
