@@ -108,7 +108,7 @@ void DisplayList(List L, void(*pDisplayFunc)(ListPosition));
 //排序链表
 void SortList(PtrToListNode pHead, 
 	PtrToListNode pEnd, 
-	int(*pCmp)(ListElementType*, ListElementType*));
+	int(*pCmp)(ListElementType, ListElementType));
 
 //获取链表的大小
 unsigned int ListSize(List L);

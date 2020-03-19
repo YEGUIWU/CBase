@@ -79,7 +79,7 @@ static void SwapNode(void* p1, void* p2, size_t size)
 	free(pt);
 }
 //-----------------------------------------------------
-void SortList(PtrToListNode pHead, PtrToListNode pEnd, int(*pCmp)(ListElementType*, ListElementType*))
+void SortList(PtrToListNode pHead, PtrToListNode pEnd, int(*pCmp)(ListElementType, ListElementType))
 {
 	if (pHead)
 	{
@@ -88,7 +88,7 @@ void SortList(PtrToListNode pHead, PtrToListNode pEnd, int(*pCmp)(ListElementTyp
 			PtrToListNode pIndex = pHead;
 			for (PtrToListNode pGo = pIndex->Next; pGo != pEnd; pGo = pGo->Next)
 			{
-				if (pCmp(pGo->ELement, pHead->ELement, pCmp) > 0)
+				if (pCmp(pGo->ELement, pHead->ELement) > 0)
 				{
 					pIndex = pIndex->Next;
 					SwapNode(pGo, pIndex, sizeof(ListNode));
