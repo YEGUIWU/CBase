@@ -96,8 +96,16 @@ ListElementType FirstOfList(List L);
 //获取链表的最后一个元素
 ListElementType FinalOfList(List L);
 
+#ifdef SINGLE_LINK_LIST
+
 //返回上一个位置
 ListPosition AdvanceOfListPos(ListPosition P, List L);
+#elif DOUBLE_LINK_LIST
+
+//返回上一个位置
+ListPosition AdvanceOfListPos(ListPosition P);
+#endif // SINGLE_LINKE_LIST
+
 
 //从节点位置取出元素的值
 ListElementType RetrieveFromListPos(ListPosition P);
@@ -106,9 +114,7 @@ ListElementType RetrieveFromListPos(ListPosition P);
 void DisplayList(List L, void(*pDisplayFunc)(ListPosition));
 
 //排序链表
-void SortList(PtrToListNode pHead, 
-	PtrToListNode pEnd, 
-	int(*pCmp)(ListElementType, ListElementType));
+void SortList(List lst, int(*pCmp)(ListElementType, ListElementType));
 
 //获取链表的大小
 unsigned int ListSize(List L);

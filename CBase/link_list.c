@@ -64,6 +64,17 @@ void DisplayList(List L, void(*pDisplayFunc)(ListPosition))
 		pDisplayFunc(p);
 }
 //-----------------------------------------------------
+//查找某个元素的位置
+ListPosition FindIf(_Bool(*pFunc)(), List L)
+{
+	for (ListPosition P = HeadOfList(L); P; P = P->Next)
+	{
+		if (pFunc(P->ELement))
+			return P;
+	}
+	return NULL;
+}
+//-----------------------------------------------------
 /*  链表快速排序  */
 
 //-----------------------------------------------------
@@ -79,7 +90,7 @@ static void SwapNode(void* p1, void* p2, size_t size)
 	free(pt);
 }
 //-----------------------------------------------------
-void SortList(PtrToListNode pHead, PtrToListNode pEnd, int(*pCmp)(ListElementType, ListElementType))
+void static SortListBase(PtrToListNode pHead, PtrToListNode pEnd, int(*pCmp)(ListElementType, ListElementType))
 {
 	if (pHead)
 	{
@@ -98,10 +109,19 @@ void SortList(PtrToListNode pHead, PtrToListNode pEnd, int(*pCmp)(ListElementTyp
 			SwapNode(pIndex, pHead, sizeof(ListNode));
 			SwapNode(&pIndex->Next, &pHead->Next, sizeof(PtrToListNode));
 
-			SortList(pHead, pIndex, pCmp);
-			SortList(pIndex->Next, pEnd, pCmp);
+			SortListBase(pHead, pIndex, pCmp);
+			SortListBase(pIndex->Next, pEnd, pCmp);
 		}
 	}
+}
+void SortList(List lst, int(*pCmp)(ListElementType, ListElementType))
+{
+#ifdef SINGLE_LINK_LIST
+
+	SortListBase(lst, NULL, pCmp);
+#elif DOUBLE_LINK_LIST
+	SortListBase(lst.Head, lst.Tail, pCmp);
+#endif 
 }
 #pragma endregion
 
@@ -127,17 +147,6 @@ ListPosition FindInList(ListElementType X, List L)
 	for (ListPosition P = L; P; P = P->Next)
 	{
 		if (P->ELement == X)
-			return P;
-	}
-	return NULL;
-}
-//-----------------------------------------------------
-//查找某个元素的位置
-ListPosition FindIf(_Bool(*pFunc)(), List L)
-{
-	for (ListPosition P = L; P; P = P->Next)
-	{
-		if (pFunc(P->ELement))
 			return P;
 	}
 	return NULL;
@@ -289,7 +298,7 @@ ListPosition AdvanceOfListPos(ListPosition P, List L)
 //获取链表尾结点位置
 ListPosition TailOfList(List L)
 {
-	ListPosition p = NULL;
+	ListPosition p = L;
 	if (p)
 	{
 		for (; p->Next; p = p->Next)
@@ -316,7 +325,7 @@ unsigned int ListSize(List L)
 //初始化链表
 void InitList(List* L)
 {
-	if (L != NULL);
+	if (L);
 	{
 		L->Head = L->Tail = NULL;
 		L->Length = 0;

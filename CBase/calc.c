@@ -3,6 +3,7 @@
 #include <math.h>
 #include <string.h>
 #include <varargs.h>
+#include <ctype.h>
 
 //#define MY_DEBUG //自定义输出调试信息开关
 
@@ -72,14 +73,15 @@ Polynomial InitPolynomial()
 //销毁多项式
 Polynomial DestoryPolynomial(Polynomial poly)
 {
-	if (!poly.monmials) return;
-	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = poly.monmials; itr; itr = itr->Next)
+	if (!ListIsEmpty(poly.monmials))
 	{
-		DestroyMonmial(itr->ELement);
+		Monmial MonmTmp = NULL;
+		for (PtrToListNode itr = HeadOfList(poly.monmials); itr; itr = itr->Next)
+		{
+			DestroyMonmial(itr->ELement);
+		}
+		poly.monmials = DestroyList(poly.monmials);
 	}
-	DestroyList(poly.monmials);
-	poly.monmials = NULL;
 	return poly;
 }
 
@@ -149,7 +151,7 @@ int static MonmialCompare(Monmial p1, Monmial p2)
 }
 void SortPolynomial(Polynomial poly)
 {
-	SortList(poly.monmials, NULL, MonmialCompare);
+	SortList(poly.monmials, MonmialCompare);
 }
 
 //----------------------------------------
@@ -186,7 +188,7 @@ void static PrintMonmial(ListPosition pos)
 // 打印多项式驱动函数
 void PrintPolynomial(const Polynomial poly)
 {
-	if (poly.monmials)
+	if (!ListIsEmpty(poly.monmials))
 	{
 		PtrToListNode head = HeadOfList(poly.monmials);
 		PrintMonmialBase(head);
@@ -194,7 +196,8 @@ void PrintPolynomial(const Polynomial poly)
 
 		if (head->Next)
 		{
-			DisplayList(head->Next, PrintMonmial);
+			for (ListPosition p = head->Next; p; p = p->Next)
+				PrintMonmial(p);
 		}
 
 		if (!IsEqual(0, poly.constant))
@@ -227,7 +230,7 @@ Polynomial CopyPolynomial(Polynomial poly)
 	Polynomial polyBarkup = InitPolynomial();
 	polyBarkup.constant = poly.constant;
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = poly.monmials; itr; itr = itr->Next)
+	for (PtrToListNode itr = HeadOfList(poly.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		polyBarkup = PushMonmial(MonmTmp->coefficient, MonmTmp->exponent, polyBarkup);
@@ -240,7 +243,7 @@ Polynomial PolynomialAdd(Polynomial polyLeft, Polynomial polyRight)
 {
 	Polynomial polyBarkup = CopyPolynomial(polyLeft);
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = polyRight.monmials; itr; itr = itr->Next)
+	for (PtrToListNode itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		polyBarkup = PushMonmial(MonmTmp->coefficient, MonmTmp->exponent, polyBarkup);
@@ -253,7 +256,7 @@ Polynomial PolynomialSubtract(Polynomial polyLeft, Polynomial polyRight)
 {
 	Polynomial polyBarkup = CopyPolynomial(polyLeft);
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = polyRight.monmials; itr; itr = itr->Next)
+	for (PtrToListNode itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		polyBarkup = PushMonmial(-MonmTmp->coefficient, MonmTmp->exponent, polyBarkup);
@@ -265,7 +268,7 @@ Polynomial PolynomialSubtract(Polynomial polyLeft, Polynomial polyRight)
 static inline void PolyMulMonm(Polynomial poly, Monmial monm)
 {
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = poly.monmials; itr; itr = itr->Next)
+	for (PtrToListNode itr = HeadOfList(poly.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		MonmTmp->coefficient *= monm->coefficient;
@@ -277,7 +280,7 @@ Polynomial PolynomialMultiply(Polynomial polyLeft, Polynomial polyRight)
 {
 	Polynomial polyBarkup = CopyPolynomial(polyLeft);
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = polyRight.monmials; itr; itr = itr->Next)
+	for (PtrToListNode itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		PolyMulMonm(polyBarkup, MonmTmp);
@@ -289,7 +292,7 @@ Polynomial PolynomialMultiply(Polynomial polyLeft, Polynomial polyRight)
 static inline void PolyDivMonm(Polynomial poly, Monmial monm)
 {
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = poly.monmials; itr; itr = itr->Next)
+	for (PtrToListNode itr = HeadOfList(poly.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		MonmTmp->coefficient /= monm->coefficient;
@@ -301,7 +304,7 @@ Polynomial PolynomialDivide(Polynomial polyLeft, Polynomial polyRight)
 {
 	Polynomial polyBarkup = CopyPolynomial(polyLeft);
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = polyRight.monmials; itr; itr = itr->Next)
+	for (PtrToListNode itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		PolyDivMonm(polyBarkup, MonmTmp);
@@ -312,9 +315,12 @@ Polynomial PolynomialDivide(Polynomial polyLeft, Polynomial polyRight)
 //make字符串
 String MakeString(const char* cstr)
 {
-	int length = strlen(cstr) + 1;
+	size_t length = strlen(cstr) + 1;
 	char* p = (char*)malloc(length);
-	strcpy_s(p, length, cstr);
+	if (p)
+	{
+		strcpy_s(p, length, cstr);
+	}
 	return (String) { p };
 }
 //----------------------------------------
@@ -362,7 +368,7 @@ int GetNX(String str)
 	int n = 1;
 	for (int i = 0; str.pBuf[i]; ++i)
 	{
-		n = str.pBuf[i] == 'x' | str.pBuf[i] == 'X' ? n + 1 : n;
+		n = ((str.pBuf[i] == 'x') | (str.pBuf[i] == 'X')) ? n + 1 : n;
 	}
 	return n;
 }
@@ -380,7 +386,8 @@ typedef struct _709394Info
 
 Polynomial StringToPolynomial(const char* cstr)
 {
-	if (!strlen(cstr)) return;
+	Polynomial poly = InitPolynomial();
+	if (!strlen(cstr)) return poly;
 	String poly_str = MakeString(cstr);
 
 	EatSpace(poly_str.pBuf);
@@ -389,7 +396,6 @@ Polynomial StringToPolynomial(const char* cstr)
 
 	int n = GetNX(poly_str);		//子项数
 
-	Polynomial poly = InitPolynomial();
 
 	if (!n)	//如果一项带x的都没有
 	{
@@ -398,10 +404,10 @@ Polynomial StringToPolynomial(const char* cstr)
 	else
 	{
 		Info* pInfo = (Info*)calloc(n, sizeof(Info));
-		if (!calloc) exit(EXIT_FAILURE);
+		if (!pInfo) exit(EXIT_FAILURE);
 		for (int i = 0, count = 0; str[i]; ++i)
 		{
-			if (str[i] == 'x' | str[i] == 'X')
+			if ((str[i] == 'x') | (str[i] == 'X'))
 			{
 				if (isdigit(str[i - 1]))
 					pInfo[count].has_coefficient = true;
@@ -418,7 +424,7 @@ Polynomial StringToPolynomial(const char* cstr)
 		double coefficient;	//系数
 		double exponent;	//指数
 		char sign;
-		char* pstr = str;
+		const char* pstr = str;
 		char* pfind_sub = NULL;
 		char* pfind_add = NULL;
 		int idx = 0;
