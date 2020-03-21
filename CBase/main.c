@@ -117,7 +117,6 @@ int main()
 	Polynomial polyA = InitPolynomial();
 	Polynomial polyB = InitPolynomial();
 	char buf[BUFSIZ];
-
 	while (true)
 	{
 
