@@ -6,40 +6,37 @@
 #include <stdbool.h>
 
 //使用单链表
-#define SINGLE_LINK_LIST 1
+///#define SINGLE_LINK_LIST 1
 //使用双链表
-//#define DOUBLE_LINK_LIST 1
+#define DOUBLE_LINK_LIST 1
 
 
 typedef void* ListElementType;
-struct ListNode;
-typedef struct ListNode ListNode;
-typedef struct ListNode* PtrToListNode;
-typedef PtrToListNode ListPosition;
 
 
 #ifdef SINGLE_LINK_LIST
-typedef PtrToListNode List;
-struct ListNode
+typedef struct ListNode
 {
 	ListElementType ELement;
 	struct ListNode* Next;
-};
+} ListNode;
+typedef ListNode* List;
 #elif DOUBLE_LINK_LIST
-struct ListNode
+typedef struct ListNode
 {
 	ListElementType ELement;
 	struct ListNode* Next;
 	struct ListNode* Pre;
-};
+} ListNode;
 typedef struct List
 {
-	PtrToListNode Head;
-	PtrToListNode Tail;
+	ListNode* Head;
+	ListNode* Tail;
 	long		  Length;
 }List;
 #endif // SINGLE_LINKE_LIST
 
+typedef ListNode* ListPosition;
 //初始化链表
 void InitList(List* L);
 
@@ -55,17 +52,11 @@ ListPosition FindInList(ListElementType X, List L);
 //查找符合条件的结点
 ListPosition FindIf(_Bool(*p)(), List L);
 
-//销毁结点
-void DestroyListNode(PtrToListNode p);
-
 //从链表中删除某个元素
 void DeleteFromList(ListElementType X, List L);
 
 //查找某个元素的上一个位置
 ListPosition FindPrePosFromList(ListElementType X, List L);
-
-//将数据封装成结点
-PtrToListNode MakeListNode(ListElementType elem);
 
 //尾插入元素
 List PushBack(ListElementType X, List L);
@@ -81,6 +72,7 @@ List PopFront(List L);
 
 //往某个位置放入某个元素
 void InsertToList(ListElementType X, ListPosition P);
+
 //清空链表
 List DestroyList(List L);
 
@@ -96,16 +88,12 @@ ListElementType FirstOfList(List L);
 //获取链表的最后一个元素
 ListElementType FinalOfList(List L);
 
-#ifdef SINGLE_LINK_LIST
-
 //返回上一个位置
+#ifdef SINGLE_LINK_LIST
 ListPosition AdvanceOfListPos(ListPosition P, List L);
 #elif DOUBLE_LINK_LIST
-
-//返回上一个位置
 ListPosition AdvanceOfListPos(ListPosition P);
-#endif // SINGLE_LINKE_LIST
-
+#endif
 
 //从节点位置取出元素的值
 ListElementType RetrieveFromListPos(ListPosition P);

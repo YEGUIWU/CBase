@@ -1,4 +1,6 @@
 #include "link_list.h"
+typedef ListNode* PtrToListNode;
+
 #pragma region 通用
 //-----------------------------------------------------
 void ListError(const char* errMsg)
@@ -410,7 +412,7 @@ List PushFront(ListElementType X, List L)
 //删除尾部
 List PopBack(List L)
 {
-	if (!ListIsEmpty(L)) //空表
+	if (ListIsEmpty(L)) //空表
 	{
 		//do nothing
 	}
