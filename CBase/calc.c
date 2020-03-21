@@ -76,7 +76,7 @@ Polynomial DestoryPolynomial(Polynomial poly)
 	if (!ListIsEmpty(poly.monmials))
 	{
 		Monmial MonmTmp = NULL;
-		for (PtrToListNode itr = HeadOfList(poly.monmials); itr; itr = itr->Next)
+		for (ListPosition itr = HeadOfList(poly.monmials); itr; itr = itr->Next)
 		{
 			DestroyMonmial(itr->ELement);
 		}
@@ -190,7 +190,7 @@ void PrintPolynomial(const Polynomial poly)
 {
 	if (!ListIsEmpty(poly.monmials))
 	{
-		PtrToListNode head = HeadOfList(poly.monmials);
+		ListPosition head = HeadOfList(poly.monmials);
 		PrintMonmialBase(head);
 
 
@@ -230,7 +230,7 @@ Polynomial CopyPolynomial(Polynomial poly)
 	Polynomial polyBarkup = InitPolynomial();
 	polyBarkup.constant = poly.constant;
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = HeadOfList(poly.monmials); itr; itr = itr->Next)
+	for (ListPosition itr = HeadOfList(poly.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		polyBarkup = PushMonmial(MonmTmp->coefficient, MonmTmp->exponent, polyBarkup);
@@ -243,7 +243,7 @@ Polynomial PolynomialAdd(Polynomial polyLeft, Polynomial polyRight)
 {
 	Polynomial polyBarkup = CopyPolynomial(polyLeft);
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
+	for (ListPosition itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		polyBarkup = PushMonmial(MonmTmp->coefficient, MonmTmp->exponent, polyBarkup);
@@ -256,7 +256,7 @@ Polynomial PolynomialSubtract(Polynomial polyLeft, Polynomial polyRight)
 {
 	Polynomial polyBarkup = CopyPolynomial(polyLeft);
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
+	for (ListPosition itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		polyBarkup = PushMonmial(-MonmTmp->coefficient, MonmTmp->exponent, polyBarkup);
@@ -268,7 +268,7 @@ Polynomial PolynomialSubtract(Polynomial polyLeft, Polynomial polyRight)
 static inline void PolyMulMonm(Polynomial poly, Monmial monm)
 {
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = HeadOfList(poly.monmials); itr; itr = itr->Next)
+	for (ListPosition itr = HeadOfList(poly.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		MonmTmp->coefficient *= monm->coefficient;
@@ -280,7 +280,7 @@ Polynomial PolynomialMultiply(Polynomial polyLeft, Polynomial polyRight)
 {
 	Polynomial polyBarkup = CopyPolynomial(polyLeft);
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
+	for (ListPosition itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		PolyMulMonm(polyBarkup, MonmTmp);
@@ -292,7 +292,7 @@ Polynomial PolynomialMultiply(Polynomial polyLeft, Polynomial polyRight)
 static inline void PolyDivMonm(Polynomial poly, Monmial monm)
 {
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = HeadOfList(poly.monmials); itr; itr = itr->Next)
+	for (ListPosition itr = HeadOfList(poly.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		MonmTmp->coefficient /= monm->coefficient;
@@ -304,7 +304,7 @@ Polynomial PolynomialDivide(Polynomial polyLeft, Polynomial polyRight)
 {
 	Polynomial polyBarkup = CopyPolynomial(polyLeft);
 	Monmial MonmTmp = NULL;
-	for (PtrToListNode itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
+	for (ListPosition itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
 	{
 		MonmTmp = itr->ELement;
 		PolyDivMonm(polyBarkup, MonmTmp);
