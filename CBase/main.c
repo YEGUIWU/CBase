@@ -78,20 +78,20 @@ void TestAll()
 	TestPolynomial(polyA1, polyB1);
 
 	//2. 通过字符串转多项式建立多项式
-	Polynomial polyA2 = StringToPolynomial("+6x -x+4.4x^2-1.2x^9-3");
+	Polynomial polyA2 = StringToPolynomial("6x -x+4.4x^2-1.2x^9-3");
 	Polynomial polyB2 = StringToPolynomial("-6x+5.4x^2+7.8x^15-3");
 	TestPolynomial(polyA2, polyB2);
 
-	Polynomial polyA3 = StringToPolynomial("+x + x ^ 2 + x ^ 3");
-	Polynomial polyB3 = StringToPolynomial("+2");
+	Polynomial polyA3 = StringToPolynomial("x + x ^ 2 + x ^ 3");
+	Polynomial polyB3 = StringToPolynomial("2");
 	TestPolynomial(polyA3, polyB3);
 
-	Polynomial polyA4 = StringToPolynomial("+x + x ^ 3");
+	Polynomial polyA4 = StringToPolynomial("x + x ^ 3");
 	Polynomial polyB4 = StringToPolynomial("-x - x - 3");
 	TestPolynomial(polyA4, polyB4);
 
-	Polynomial polyA5 = StringToPolynomial("+x + x ^ 3 + x ^ 5");
-	Polynomial polyB5 = StringToPolynomial(" +x + x ^ 2 + x ^ 4");
+	Polynomial polyA5 = StringToPolynomial("x + x ^ 3 + x ^ 5");
+	Polynomial polyB5 = StringToPolynomial(" x + x ^ 2 + x ^ 4");
 	TestPolynomial(polyA5, polyB5);
 }
 
@@ -100,14 +100,13 @@ static void inline Tips()
 	system("cls");
 	Output_Cutoff_Rule();
 	printf("多项式建立规则: "
-		"\n(1) 空格可以随便加，但是第一项如果是正数需要加+"
-		"\n(2) 常数项需要放在最后一项\n\n");
+		"\n(1) 空格可以随便加"
+		"\n(2) 常数项需要放在最后一项且只能有一项\n\n");
 	printf("[输入0] 直接输出测试要求的所有结果\n");
 	printf("[输入1] 输入建立多项式\n");
 	printf("[输入2] 通过编辑input文件并读取来建立多项式\n");
 	printf("[输入3] 进行各种运算\n");
-	printf("[输入4] 清屏\n");
-	printf("[输入5] 退出\n");
+	printf("[输入4] 退出\n");
 	Output_Cutoff_Rule();
 }
 
@@ -159,9 +158,6 @@ int main()
 			system("pause");
 			break;
 		case '4': 
-			system("cls");
-			break;
-		case '5': 
 			exit(EXIT_SUCCESS);
 			break;
 		}

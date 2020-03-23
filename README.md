@@ -206,7 +206,7 @@ Polynomial StringToPolynomial(const char* cstr);
 
 ### 3.1 菜单主页
 
-![image-20200319210813316](README.assets/image-20200319210813316.png)
+![image-20200323131126820](README.assets/image-20200323131126820.png)
 
 ### 3.2 键盘输入
 
@@ -214,7 +214,7 @@ Polynomial StringToPolynomial(const char* cstr);
 
 #### 3.2.1 选择1键盘输入建立多项式
 
-![image-20200319210918443](README.assets/image-20200319210918443.png)
+![image-20200323131231099](README.assets/image-20200323131231099.png)
 
 #### 3.2.2 选择3进行各种运算
 
@@ -232,7 +232,7 @@ Polynomial StringToPolynomial(const char* cstr);
 
 #### 3.3.2 编辑项目工作目录下的input.txt文件
 
-![image-20200319211132781](README.assets/image-20200319211132781.png)
+![image-20200323131301930](README.assets/image-20200323131301930.png)
 
 #### 3.3.3 选择3进行各种运算
 

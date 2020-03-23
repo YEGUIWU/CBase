@@ -2,6 +2,7 @@
 #include "calc.h"
 #include <math.h>
 #include <string.h>
+#include <memory.h>
 #include <varargs.h>
 #include <ctype.h>
 
@@ -365,13 +366,15 @@ int GetNX(String str)
 	if (!strlen(str.pBuf))
 		return 0;
 
-	int n = 1;
+	int n = 0;
 	for (int i = 0; str.pBuf[i]; ++i)
 	{
 		n = ((str.pBuf[i] == 'x') | (str.pBuf[i] == 'X')) ? n + 1 : n;
 	}
 	return n;
 }
+
+
 //-------------------------------------------------
 //功能：字符串转多项式
 //限制：1. 尝试项必须放在字符串最末尾
@@ -388,7 +391,19 @@ Polynomial StringToPolynomial(const char* cstr)
 {
 	Polynomial poly = InitPolynomial();
 	if (!strlen(cstr)) return poly;
-	String poly_str = MakeString(cstr);
+	String poly_str;
+	if (cstr[0] != '-')
+	{
+		char tmpBuf[BUFSIZ];
+		memset(tmpBuf, 0, BUFSIZ);
+		tmpBuf[0] = '+';
+		strcat(tmpBuf, cstr);
+		poly_str = MakeString(tmpBuf);
+	}
+	else
+	{
+		poly_str = MakeString(cstr);
+	}
 
 	EatSpace(poly_str.pBuf);
 
@@ -403,13 +418,14 @@ Polynomial StringToPolynomial(const char* cstr)
 	}
 	else
 	{
+		++n;
 		Info* pInfo = (Info*)calloc(n, sizeof(Info));
 		if (!pInfo) exit(EXIT_FAILURE);
 		for (int i = 0, count = 0; str[i]; ++i)
 		{
 			if ((str[i] == 'x') | (str[i] == 'X'))
 			{
-				if (isdigit(str[i - 1]))
+				if (i > 0 && isdigit(str[i - 1]))
 					pInfo[count].has_coefficient = true;
 				if (str[i + 1] == '^' && isdigit(str[i + 2]))
 					pInfo[count].has_exponent= true;
@@ -430,9 +446,8 @@ Polynomial StringToPolynomial(const char* cstr)
 		int idx = 0;
 
 		//"+4.0X^6.0-X^4.0+2.0X^3.0"
-		for (int idx = 0; n != idx; ++idx, ++pstr)
+		for (int idx = 0; idx != n; ++idx, ++pstr)
 		{
-
 			OutputDebugInfo("%s\n", pstr);
 			pfind_add = strchr(pstr, '+');
 			pfind_sub = strchr(pstr, '-');
