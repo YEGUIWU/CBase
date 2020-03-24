@@ -170,8 +170,6 @@ void DestroyMonmial(Monmial p);
 Polynomial InitPolynomial();
 //销毁多项式
 Polynomial DestoryPolynomial(Polynomial poly);
-//追加常数项
-Polynomial PushConstant(Polynomial poly, const double constant);
 //追加单项式
 Polynomial PushMonmial(double coefficient, double exponent, Polynomial poly);
 //打印多项式
@@ -218,7 +216,7 @@ Polynomial StringToPolynomial(const char* cstr);
 
 #### 3.2.2 选择3进行各种运算
 
-![image-20200319210958397](README.assets/image-20200319210958397.png)
+![image-20200324121827242](README.assets/image-20200324121827242.png)
 
 
 
@@ -236,10 +234,10 @@ Polynomial StringToPolynomial(const char* cstr);
 
 #### 3.3.3 选择3进行各种运算
 
-![image-20200319211256421](README.assets/image-20200319211256421.png)
+![image-20200324121840445](README.assets/image-20200324121840445.png)
 
 
 
 ### 3.4 直接输出所有测试结果
 
-![image-20200319211400432](README.assets/image-20200319211400432.png)
+![image-20200324121911775](README.assets/image-20200324121911775.png)
