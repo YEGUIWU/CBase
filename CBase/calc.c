@@ -66,7 +66,7 @@ void DestroyMonmial(Monmial p)
 //初始化多形式
 Polynomial InitPolynomial()
 {
-	return (Polynomial) { NULL, 0 };
+	return (Polynomial) { NULL };
 }
 
 
@@ -111,11 +111,11 @@ Polynomial PushMonmial(double coefficient, double exponent, Polynomial poly)
 {
 	if (IsEqual(0, coefficient)) //如果系数为0就不用加进去了
 		return poly;
-	if (IsEqual(0, exponent))	//如果指数为0，就是常数项了
-	{
-		poly.constant += coefficient;
-		return poly;
-	}
+	//if (IsEqual(0, exponent))	//如果指数为0，就是常数项了
+	//{
+	//	poly.constant += coefficient;
+	//	return poly;
+	//}
 
 	SetFunc(exponent);
 	//查找多项式中是否有指数相同的项
@@ -136,10 +136,10 @@ Polynomial PushMonmial(double coefficient, double exponent, Polynomial poly)
 
 //----------------------------------------
 //追加常数项
-Polynomial PushConstant(Polynomial poly, const double constant)
-{
-	return (Polynomial) { poly.monmials, poly.constant + constant };
-}
+//Polynomial PushConstant(Polynomial poly, const double constant)
+//{
+//	return (Polynomial) { poly.monmials, poly.constant + constant };
+//}
 
 //----------------------------------------
 //排序多项式
@@ -161,18 +161,24 @@ void static inline PrintMonmialBase(ListPosition pos)
 {
 	if (!pos) return;
 	Monmial Monm = pos->ELement;
-	if (IsEqual(0, Monm->coefficient))
+	if (IsEqual(0, Monm->coefficient))//系数为0不打印
 		return;
-
-	if (IsEqual(1, Monm->coefficient))
-		printf("X");
-	else if (IsEqual(-1, Monm->coefficient))
-		printf("-X");
+	if (IsEqual(0, Monm->exponent))
+	{
+		printf("%.1f", Monm->coefficient);
+	}
 	else
-		printf("%.1fX", Monm->coefficient);
+	{
+		if (IsEqual(1, Monm->coefficient))
+			printf("X");
+		else if (IsEqual(-1, Monm->coefficient))
+			printf("-X");
+		else
+			printf("%.1fX", Monm->coefficient);
 
-	if (!IsEqual(1, Monm->exponent))
-		printf("^%.1f", Monm->exponent);
+		if (!IsEqual(1, Monm->exponent))
+			printf("^%.1f", Monm->exponent);
+	}
 	putchar(' ');
 }
 //-----------------------------------------
@@ -201,18 +207,18 @@ void PrintPolynomial(const Polynomial poly)
 				PrintMonmial(p);
 		}
 
-		if (!IsEqual(0, poly.constant))
-		{
-			if (poly.constant > 0)
-				printf("+ %.1f", poly.constant);
-			else
-				printf(" %.1f", poly.constant);
-		}
+		//if (!IsEqual(0, poly.constant))
+		//{
+		//	if (poly.constant > 0)
+		//		printf("+ %.1f", poly.constant);
+		//	else
+		//		printf(" %.1f", poly.constant);
+		//}
 	}
-	else if (!IsEqual(0, poly.constant))
-	{
-		printf("%.1f", poly.constant);
-	}
+	//else if (!IsEqual(0, poly.constant))
+	//{
+	//	printf("%.1f", poly.constant);
+	//}
 
 
 	printf("\n");
@@ -229,7 +235,7 @@ Monmial CopyMonmial(Monmial pMonm)
 Polynomial CopyPolynomial(Polynomial poly)
 {
 	Polynomial polyBarkup = InitPolynomial();
-	polyBarkup.constant = poly.constant;
+	//polyBarkup.constant = poly.constant;
 	Monmial MonmTmp = NULL;
 	for (ListPosition itr = HeadOfList(poly.monmials); itr; itr = itr->Next)
 	{
@@ -414,7 +420,8 @@ Polynomial StringToPolynomial(const char* cstr)
 
 	if (!n)	//如果一项带x的都没有
 	{
-		poly = PushConstant(poly, atof(cstr));
+		//poly = PushConstant(poly, atof(cstr));
+		poly = PushMonmial(atof(cstr), 0, poly);
 	}
 	else
 	{

@@ -6,9 +6,9 @@
 #include <stdbool.h>
 
 //使用单链表
-///#define SINGLE_LINK_LIST 1
+#define SINGLE_LINK_LIST 1
 //使用双链表
-#define DOUBLE_LINK_LIST 1
+//#define DOUBLE_LINK_LIST 1
 
 
 typedef void* ListElementType;

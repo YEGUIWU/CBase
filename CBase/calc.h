@@ -15,7 +15,7 @@ typedef MonomialBase* Monmial;
 typedef struct Polynomial
 {
 	List monmials;		//带未知数的项
-	double constant;	//常数项
+	//double constant;	//常数项
 }Polynomial;
 
 //字符串类型
@@ -34,7 +34,7 @@ Polynomial InitPolynomial();
 //销毁多项式
 Polynomial DestoryPolynomial(Polynomial poly);
 //追加常数项
-Polynomial PushConstant(Polynomial poly, const double constant);
+//Polynomial PushConstant(Polynomial poly, const double constant);
 //追加单项式
 Polynomial PushMonmial(double coefficient, double exponent, Polynomial poly);
 //打印多项式
