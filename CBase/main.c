@@ -136,6 +136,7 @@ int main()
 			printf("[请输入多项式B]：");
 			fgets(buf, BUFSIZ, stdin);
 			polyB = StringToPolynomial(buf);
+			system("pause");
 			break;
 		case '2': 
 			polyA = DestoryPolynomial(polyA);

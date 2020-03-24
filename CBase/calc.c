@@ -285,14 +285,23 @@ static inline void PolyMulMonm(Polynomial poly, Monmial monm)
 //
 Polynomial PolynomialMultiply(Polynomial polyLeft, Polynomial polyRight)
 {
-	Polynomial polyBarkup = CopyPolynomial(polyLeft);
+	Polynomial polyRes = InitPolynomial();
 	Monmial MonmTmp = NULL;
 	for (ListPosition itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
 	{
+
+		Polynomial polyBarkup = CopyPolynomial(polyLeft);
 		MonmTmp = itr->ELement;
 		PolyMulMonm(polyBarkup, MonmTmp);
+
+		for (ListPosition itr2 = HeadOfList(polyBarkup.monmials); itr2; itr2 = itr2->Next)
+		{
+			MonmTmp = itr2->ELement;
+			polyRes = PushMonmial(MonmTmp->coefficient, MonmTmp->exponent, polyRes);
+		}
+		DestoryPolynomial(polyBarkup);
 	}
-	return polyBarkup;
+	return polyRes;
 }
 //----------------------------------------
 //多项式相除
@@ -309,14 +318,23 @@ static inline void PolyDivMonm(Polynomial poly, Monmial monm)
 //
 Polynomial PolynomialDivide(Polynomial polyLeft, Polynomial polyRight)
 {
-	Polynomial polyBarkup = CopyPolynomial(polyLeft);
+	Polynomial polyRes = InitPolynomial();
 	Monmial MonmTmp = NULL;
 	for (ListPosition itr = HeadOfList(polyRight.monmials); itr; itr = itr->Next)
 	{
+
+		Polynomial polyBarkup = CopyPolynomial(polyLeft);
 		MonmTmp = itr->ELement;
 		PolyDivMonm(polyBarkup, MonmTmp);
+
+		for (ListPosition itr2 = HeadOfList(polyBarkup.monmials); itr2; itr2 = itr2->Next)
+		{
+			MonmTmp = itr2->ELement;
+			polyRes = PushMonmial(MonmTmp->coefficient, MonmTmp->exponent, polyRes);
+		}
+		DestoryPolynomial(polyBarkup);
 	}
-	return polyBarkup;
+	return polyRes;
 }
 //----------------------------------------
 //make字符串
