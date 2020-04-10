@@ -111,12 +111,6 @@ Polynomial PushMonmial(double coefficient, double exponent, Polynomial poly)
 {
 	if (IsEqual(0, coefficient)) //如果系数为0就不用加进去了
 		return poly;
-	//if (IsEqual(0, exponent))	//如果指数为0，就是常数项了
-	//{
-	//	poly.constant += coefficient;
-	//	return poly;
-	//}
-
 	SetFunc(exponent);
 	//查找多项式中是否有指数相同的项
 	ListPosition pFind = FindIf(Func, poly.monmials);

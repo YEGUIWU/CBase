@@ -1,13 +1,17 @@
-#ifndef _LINK_LIST_
+ï»¿#ifndef _LINK_LIST_
 #define _LINK_LIST_
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef _WIN32
 #include <memory.h>
+#else
+#include <string.h>
+#endif
 #include <stdbool.h>
 
-//Ê¹ÓÃµ¥Á´±í
+//ä½¿ç”¨å•é“¾è¡¨
 #define SINGLE_LINK_LIST 1
-//Ê¹ÓÃË«Á´±í
+//ä½¿ç”¨åŒé“¾è¡¨
 //#define DOUBLE_LINK_LIST 1
 
 
@@ -37,79 +41,84 @@ typedef struct List
 #endif // SINGLE_LINKE_LIST
 
 typedef ListNode* ListPosition;
-//³õÊ¼»¯Á´±í
+//åˆå§‹åŒ–é“¾è¡¨
 void InitList(List* L);
 
-//ÅĞ¶ÏÁ´±íÊÇ·ñÎª¿Õ
+//åˆ¤æ–­é“¾è¡¨æ˜¯å¦ä¸ºç©º
 _Bool ListIsEmpty(List L);
 
-//ÅĞ¶ÏÄ³¸öÎ»ÖÃÊÇ·ñÎ»ÓÚÁ´±íµÄ½áÎ²
+//åˆ¤æ–­æŸä¸ªä½ç½®æ˜¯å¦ä½äºé“¾è¡¨çš„ç»“å°¾
 _Bool PosInListIsLast(ListPosition P);
 
-//²éÕÒÄ³¸öÔªËØµÄÎ»ÖÃ
+//æŸ¥æ‰¾æŸä¸ªå…ƒç´ çš„ä½ç½®
 ListPosition FindInList(ListElementType X, List L);
 
-//²éÕÒ·ûºÏÌõ¼şµÄ½áµã
+//æŸ¥æ‰¾ç¬¦åˆæ¡ä»¶çš„ç»“ç‚¹
 ListPosition FindIf(_Bool(*p)(), List L);
 
-//´ÓÁ´±íÖĞÉ¾³ıÄ³¸öÔªËØ
+//ä»é“¾è¡¨ä¸­åˆ é™¤æŸä¸ªå…ƒç´ 
 void DeleteFromList(ListElementType X, List L);
 
-//²éÕÒÄ³¸öÔªËØµÄÉÏÒ»¸öÎ»ÖÃ
+//æŸ¥æ‰¾æŸä¸ªå…ƒç´ çš„ä¸Šä¸€ä¸ªä½ç½®
 ListPosition FindPrePosFromList(ListElementType X, List L);
 
-//Î²²åÈëÔªËØ
+//å°¾æ’å…¥å…ƒç´ 
 List PushBack(ListElementType X, List L);
 
-//Í·²åÈëÔªËØ
+//å¤´æ’å…¥å…ƒç´ 
 List PushFront(ListElementType X, List L);
 
-//É¾³ıÎ²²¿
+//åˆ é™¤å°¾éƒ¨
 List PopBack(List L);
 
-//É¾³ıÍ·²¿
+//åˆ é™¤å¤´éƒ¨
 List PopFront(List L);
 
-//ÍùÄ³¸öÎ»ÖÃ·ÅÈëÄ³¸öÔªËØ
+//å¾€æŸä¸ªä½ç½®æ”¾å…¥æŸä¸ªå…ƒç´ 
 void InsertToList(ListElementType X, ListPosition P);
 
-//Çå¿ÕÁ´±í
+//æ¸…ç©ºé“¾è¡¨
 List DestroyList(List L);
 
-//»ñÈ¡Á´±íÍ·½áµãÎ»ÖÃ
+//è·å–é“¾è¡¨å¤´ç»“ç‚¹ä½ç½®
 ListPosition HeadOfList(List L);
 
-//»ñÈ¡Á´±íÎ²½áµãÎ»ÖÃ
+//è·å–é“¾è¡¨å°¾ç»“ç‚¹ä½ç½®
 ListPosition TailOfList(List L);
 
-//»ñÈ¡Á´±íµÄµÚÒ»¸öÔªËØ
+//è·å–é“¾è¡¨çš„ç¬¬ä¸€ä¸ªå…ƒç´ 
 ListElementType FirstOfList(List L);
 
-//»ñÈ¡Á´±íµÄ×îºóÒ»¸öÔªËØ
+//è·å–é“¾è¡¨çš„æœ€åä¸€ä¸ªå…ƒç´ 
 ListElementType FinalOfList(List L);
 
-//·µ»ØÉÏÒ»¸öÎ»ÖÃ
+//è¿”å›ä¸Šä¸€ä¸ªä½ç½®
 #ifdef SINGLE_LINK_LIST
 ListPosition AdvanceOfListPos(ListPosition P, List L);
 #elif DOUBLE_LINK_LIST
 ListPosition AdvanceOfListPos(ListPosition P);
 #endif
 
-//´Ó½ÚµãÎ»ÖÃÈ¡³öÔªËØµÄÖµ
+//ä»èŠ‚ç‚¹ä½ç½®å–å‡ºå…ƒç´ çš„å€¼
 ListElementType RetrieveFromListPos(ListPosition P);
 
-//´òÓ¡Á´±í
+//æ‰“å°é“¾è¡¨
 void DisplayList(List L, void(*pDisplayFunc)(ListPosition));
 
-//ÅÅĞòÁ´±í
-void SortList(List lst, int(*pCmp)(ListElementType, ListElementType));
+//æ’åºé“¾è¡¨
+void SortList(List L, int(*pCmp)(ListElementType, ListElementType));
 
-//»ñÈ¡Á´±íµÄ´óĞ¡
+//éå†é“¾è¡¨
+void ListForEach(List L, void(*pFunc)(ListPosition));
+//å¸¦å‚éå†é“¾è¡¨
+void ListForEachWithArg(List lst, void(*pFunc)(ListPosition, void*), void*arg);
+
+//è·å–é“¾è¡¨çš„å¤§å°
 unsigned int ListSize(List L);
 
-//¾¯¸æ´íÎó£¬´òÓ¡´íÎóĞÅÏ¢
+//è­¦å‘Šé”™è¯¯ï¼Œæ‰“å°é”™è¯¯ä¿¡æ¯
 void ListError(const char* errMsg);
 
-//ÑÏÖØ´íÎó£¬´òÓ¡´íÎóĞÅÏ¢£¬²¢ÍË³ö³ÌĞò
+//ä¸¥é‡é”™è¯¯ï¼Œæ‰“å°é”™è¯¯ä¿¡æ¯ï¼Œå¹¶é€€å‡ºç¨‹åº
 void ListFailError(const char* errMsg);
 #endif // !_LINK_LIST_
